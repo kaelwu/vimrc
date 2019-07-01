@@ -100,13 +100,14 @@ call vundle#begin()
 "call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
+Bundle "tobyS/vmustache"
+Bundle 'tobyS/pdv'
 Bundle 'majutsushi/tagbar'
 Bundle 'Shougo/vimproc'
 Bundle 'Shougo/unite.vim'
-Bundle 'm2mdas/phpcomplete-extended'
 
-
-Plugin '2072/PHP-Indenting-for-VIm'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'Yggdroot/indentLine'
 Plugin 'marijnh/tern_for_vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'fugitive.vim'
@@ -116,7 +117,6 @@ Plugin 'EasyMotion'
 Plugin 'derekwyatt/vim-scala'
 Plugin 'jshint.vim'
 Plugin 'cespare/vim-toml'
-Plugin 'ashisha/image.vim'
 Plugin 'AnsiEsc.vim'
 
 
@@ -128,12 +128,12 @@ Plugin 'AnsiEsc.vim'
 
 
 Plugin 'vim-airline/vim-airline'
+Plugin 'mdempsky/gocode', {'rtp': 'vim/'}
 Plugin 'fatih/vim-go'
 Plugin 'w0rp/ale'
 Plugin 'JamshedVesuna/vim-markdown-preview'
 Plugin 'instant-markdown.vim'
 Plugin 'The-NERD-tree'
-Plugin 'phpcomplete.vim'
 Plugin 'ctrlp.vim'
 Plugin 'taglist.vim'
 Plugin 'auto_mkdir'
@@ -160,15 +160,20 @@ Plugin 'tComment'
 
 call vundle#end()            " required
 
-filetype plugin indent on    " required
+filetype plugin indent on
+" show existing tab with 4 spaces width
+set tabstop=4
+set softtabstop=4
+" when indenting with '>', use 4 spaces width
+set shiftwidth=4
+" On pressing tab, insert 4 spaces
+set expandtab
 
-" To ignore plugin indent changes, instead use:
 
 filetype plugin on
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'StanAngeloff/php.vim'
 
 call plug#end()
 
@@ -375,6 +380,7 @@ autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
 "代码补全 
 
 set completeopt=preview,menu 
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 
 "允许插件  
 
@@ -436,27 +442,16 @@ set confirm
 
 " 自动缩进
 
-set autoindent
+"set autoindent
 
-set cindent
+"set cindent
 
 " Tab键的宽度
 
-set tabstop=4
-
-" 统一缩进为4
-
-set softtabstop=4
-
-set shiftwidth=4
-
-" 不要用空格代替制表符
-
-set noexpandtab
 
 " 在行和段开始处使用制表符
 
-set smarttab
+"set smarttab
 
 " 显示行号
 
@@ -683,8 +678,8 @@ let g:go_auto_type_info = 1
 let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
 let g:ycm_global_ycm_extra_conf = "/Users/keal/.ycm_extra_conf.py"
 let g:go_decls_includes = "func,type"
-let $VIM="/usr/local/Cellar/vim/8.0.0124/share/vim"
-let $VIMRUNTIME="/usr/local/Cellar/vim/8.0.0124/share/vim/vim80"
+let $VIM="/usr/local/Cellar/vim/8.1.0150/share/vim"
+let $VIMRUNTIME="/usr/local/Cellar/vim/8.1.0150/share/vim/vim80"
 set t_Co=256
 set background=dark
 colorscheme solarized
@@ -741,3 +736,28 @@ nmap [h <Plug>GitGutterPrevHunk
 let g:gitgutter_enable = 0
 nmap <F3> :TagbarToggle<CR>
 set clipboard=unnamed
+
+"golang 设置"
+set rtp+=/Users/keal/go/src/golang.org/x/lint/misc/vim
+autocmd BufWritePost,FileWritePost *.go execute 'Lint' | cwindow
+
+
+"python 跳转 补全"
+let g:jedi#auto_initialization = 0
+let g:jedi#show_call_signatures = "1"
+
+let g:jedi#goto_command = "<leader>d"
+let g:jedi#goto_assignments_command = "<leader>g"
+let g:jedi#goto_definitions_command = ""
+let g:jedi#documentation_command = "K"
+let g:jedi#usages_command = "<leader>n"
+let g:jedi#completions_command = "<C-Space>"
+let g:jedi#rename_command = "<leader>r"
+
+
+set conceallevel=1
+let g:indentLine_conceallevel=1
+let g:ycm_path_to_python_interpreter="/usr/local/Cellar/python/3.7.0/bin/python3.7"
+
+highlight Comment ctermfg=red guifg=red
+
